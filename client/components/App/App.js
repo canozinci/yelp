@@ -1,6 +1,5 @@
 import React from 'react';
-import './app.css';
-import styles from '../styles.modules.css';
+import styles from './styles.modules.css';
 import 'font-awesome/css/font-awesome.css'
 
 class App extends React.Component {

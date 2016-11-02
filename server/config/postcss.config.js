@@ -4,4 +4,4 @@ require('precss'),
 require('cssnano')
 ];
 
-export default postCSSConfig;
+module.exports =  postCSSConfig;
