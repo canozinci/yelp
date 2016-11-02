@@ -2,24 +2,54 @@
 
 **Server/index.js
 
-                import express from 'express';
-                import path from "path";
+              import express from 'express';
+              import path from "path";
 
-                let app = express();
+              import webpack from 'webpack';
+              import webpackMiddleware from 'webpack-dev-middleware';
 
-                app.get('/*', (req,res) => {
-                  res.sendFile(path.join(__dirname, './index.html'));
-                });
+              import webpackConfig from '../webpack.config.dev.js';
 
-                app.listen(3000, () => console.log('Running on localhost 3000'));
+              let app = express();
 
-**npm install --save-dev babel-cli express babel-preset-es2015 nodemon
+              app.use(webpackMiddleware(webpack(webpackConfig)));
+
+              app.get('/*', (req,res) => {
+                res.sendFile(path.join(__dirname, './index.html'));
+              });
+
+              app.listen(3000, () => console.log('Running on localhost 3000'));
+
+**npm install --save-dev babel-cli express babel-preset-es2015 nodemon webpack webpack-dev-middleware babel-loader babel-preset-react
 
 ** package.json’da script ekle
 	"start": "nodemon --watch server --exec babel-node -- server/index.js",
 
 **.babelrc
-	{ "presets": ["es2015"] }
+	{ "presets": ["es2015","react"] }
+
+** webpack.config.dev.js
+              import path from 'path';
+
+              export default {
+                devtools: 'eval-source-map',
+                entry: path.join(__dirname, '/client/index.js'),
+                output: {
+                  path: '/'
+                },
+                module:{
+                  loaders: [
+                    {
+                       test: /\.js$/,
+                       include:path.join(__dirname, '/client'),
+                       loaders: ['babel']
+                    }
+                  ]
+                },
+                resolve:{
+                  extensions: ['','.js']
+                }
+              }
 
 ** server/index.html
               <!DOCTYPE html>
@@ -30,10 +60,33 @@
                 <meta content ="width=device-width, initial-scale=1" name="viewport"/>
               </head>
               <body>
-                <h1> Hello World</h1>
+                <div id="app"></div>
+                <script src="bundle.js"></script>
               </body>
               </html>
 
 ** .gitignore
   .DS_STORE
   node_modules
+
+** git add --A
+   git commit -m "message"
+  git push origin master
+
+** npm install --save react react-dom
+
+** client/index.js
+            import React from 'react';
+            import {render} from 'react-dom';
+            import App from './components/App';
+
+            render (<App /> , document.getElementById('app'));
+
+** client/components/App.js
+            import React from 'react';
+
+            export default () => {
+              return (
+                <h1> Hello World </h1>
+              );
+            }
