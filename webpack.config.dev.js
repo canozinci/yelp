@@ -1,5 +1,6 @@
 import path from 'path';
-import webpack from 'webpack'
+import webpack from 'webpack';
+import postCSSConfig from './server/config/postcss.config'
 
 export default {
   devtools: 'eval-source-map',
@@ -10,6 +11,9 @@ export default {
   output: {
     path: '/',
     publicPath: '/'
+  },
+    postcss: function() {
+    return postCSSConfig;
   },
   plugins: [
     new webpack.NoErrorsPlugin(),
@@ -22,7 +26,12 @@ export default {
          test: /\.js$/,
          include:path.join(__dirname, '/client'),
          loaders: ['react-hot-loader/webpack', 'babel']
-      }
+      },
+      {
+          test: /\.css$/,
+          include: path.join(__dirname, '/client'),
+          loader: 'style!css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]&camelCase!postcss'
+        },
     ]
   },
   resolve:{
