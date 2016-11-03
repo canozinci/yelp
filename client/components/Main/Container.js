@@ -1,8 +1,11 @@
 import React from 'react';
 import Map, {GoogleApiWrapper} from 'google-maps-react';
-import {searchNearby} from '../../utils/googleApiHelpers'
-import Header from '../Header/Header'
-import styles from './styles.module.css'
+import {searchNearby} from '../../utils/googleApiHelpers';
+import styles from './styles.module.css';
+
+import Header from '../Header/Header';
+import Sidebar from '../Sidebar/Sidebar'
+
 
 export class Container extends React.Component {
   constructor(props) {
@@ -41,11 +44,10 @@ export class Container extends React.Component {
           className={styles.wrapper}
           >
           <Header />
-          <div className={styles.content}>
-            {this.state.places.map(place => {
-              return (<div key={place.id}>{place.name}</div>)
-            })}
-          </div>
+          <Sidebar
+            title={'Restaurants'}
+            places={this.state.places}
+            />
         </Map>
       </div>
     )
