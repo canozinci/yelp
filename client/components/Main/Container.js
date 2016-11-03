@@ -16,6 +16,12 @@ export class Container extends React.Component {
       pagination: null
     }
   }
+  onMarkerClick(item) {
+    const {place} = item; // place prop
+    const {push} = this.context.router;
+    push(`/map/detail/${place.place_id}`)
+  }
+
   onReady(mapProps, map) {
     const {google} = this.props;
     const opts = {
@@ -41,7 +47,8 @@ export class Container extends React.Component {
             {
               google: this.props.google,
               places: this.state.places,
-              loaded: this.props.loaded
+              loaded: this.props.loaded,
+              onMarkerClick: this.onMarkerClick.bind(this)
             });
         }
     return (
@@ -66,7 +73,9 @@ export class Container extends React.Component {
     )
   }
 }
-
+Container.contextTypes = {
+  router: React.PropTypes.object
+}
 export default GoogleApiWrapper({
   apiKey: __GAPI_KEY__
 })(Container)
